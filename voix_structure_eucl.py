@@ -74,7 +74,7 @@ class Voix :
         self.root, self.quality, self.seventh = self.l_tab[self.i_tab]
         self.i_tab = (self.i_tab + 1)%self.len_tab
         self.debut_bar += self.oneTime*8
-        print(self.root, self.quality, self.seventh)
+        #print(self.root, self.quality, self.seventh)
     
     def create_newNote(self):
         return main_droite.gen(self.v)
@@ -180,16 +180,18 @@ class VoixEuclideGauche (Voix) : #même objet que voix gauche, mais avec un vect
         
         self.channel = 0
         self.program = 0 #piano
-
-        self.rtm = main_gauche.nouvelle_structure_rythmique(self.vrtm)
         
         self.rtm_eucl = Algo_rythme_euclidien.rythme_euclidien(nb_actif, nb_tps, offset)
         self.i_rtm = 0
-        self.len_rtm = len(self.rtm)
+        self.len_rtm = len(self.rtm_eucl) #taille du tableau euclidien
         self.l_indices_l = self.init_l_indices_l()
         self.l_notes_l = self.gen_l_notes_l()
 
         self.choixInstrument()
+        
+        self.t_end = time()
+        
+        print(self.rtm_eucl, self.l_indices_l, self.l_notes_l)
     
     def init_l_indices_l(self):
         v_l = notes.f_gamme(self.vecteur_init, self.scale)
@@ -198,7 +200,7 @@ class VoixEuclideGauche (Voix) : #même objet que voix gauche, mais avec un vect
         v_l = notes.f_gamme(v_l, gammes.accord(root, quality, seventh))
         liste_notes_l = []
     
-        for i in range(0, self.len_rtm):
+        for i in range(0, self.len_rtm//4 + 1): #a priori on ira jamais plus loin que 1/4 de la taille de rtm_eucl
             new_note_l = main_droite.gen(v_l)
             liste_notes_l.append(new_note_l)
 
@@ -213,6 +215,7 @@ class VoixEuclideGauche (Voix) : #même objet que voix gauche, mais avec un vect
     
     def changeMesure(self):
         super().changeMesure()
+        self.i_rtm = 0
         self.l_notes_l = self.gen_l_notes_l()
         self.v = self.vecteur_init
         self.v = notes.f_gamme(self.v, gammes.accord(self.root, self.quality, self.seventh))
@@ -221,7 +224,28 @@ class VoixEuclideGauche (Voix) : #même objet que voix gauche, mais avec un vect
         new_note_l = self.l_notes_l[self.l_indices_l[self.i_rtm]]
         return new_note_l
     
-    def durationNote(self):
-        tp_l = self.rtm[self.i_rtm]  #le nombre de temps de la note que l'on va jouer
+    def avanceNote(self):
+        bitnote = self.rtm_eucl[self.i_rtm]  #le bit du temps courant
         self.i_rtm = (self.i_rtm + 1)%self.len_rtm
-        return tp_l*self.oneTime
+        self.boolnote = bool(bitnote)
+    
+    def nextTime(self, t = time()):
+        """
+        Décider de la prochaine note
+        """
+
+        if time() >= self.oneTime*8 + self.debut_bar: #début de mesure par la fin de la precedente
+           self.changeMesure()
+        
+        if self.boolnote: #une nouvelle note
+            self.new_note = self.create_newNote()            
+            self.boolnote = False #sinon nextime va renvoyer des notes en boucle : on en veut juste une
+            return self.new_note
+
+        
+        elif time() > self.t_end : #arrêter la note en cours
+            note_off = mido.Message("note_off", note = self.new_note, channel = self.channel, velocity = self.velocity)
+            self.output_port.send(note_off)
+            self.t_end += self.oneTime
+            self.avanceNote()
+            print(self.i_rtm, self.boolnote)
