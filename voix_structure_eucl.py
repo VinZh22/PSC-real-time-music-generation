@@ -15,7 +15,7 @@ class Voix :
     elle sert de classe mère pour toutes les autres voix
     Si vous avez des changements qui s'appliquent à toutes les voix, veuillez les mettre ici
     """
-    def __init__(self, vecteur_init, vecteur_rythme, l_tab, scale, output_port, tempo = 120) -> None:
+    def __init__(self, vecteur_init, vecteur_rythme, l_tab, scale, output_port, t_origin = time(), tempo = 120) -> None:
         """
         on initialise toutes les variables
         """
@@ -37,7 +37,7 @@ class Voix :
         self.boolnote= True #indique le besoin de générer une nouvelle note
         self.len_tab = len(l_tab)
         self.v= notes.f_gamme(self.vecteur_init, scale)
-        self.debut_bar = time() - 8*self.oneTime
+        self.debut_bar = t_origin - 8*self.oneTime
     
     
     def nextTime(self, t = time()):
@@ -175,7 +175,7 @@ class VoixDroite (Voix) :
         return t_end
 
 class VoixEuclideGauche (Voix) : #même objet que voix gauche, mais avec un vecteur de rythme fixe exprimé en bits
-    def __init__(self, vecteur_init, vecteur_rythme, l_tab, scale, output_port, nb_actif, nb_tps, offset, tempo=120) -> None:
+    def __init__(self, vecteur_init, vecteur_rythme, l_tab, scale, output_port, nb_actif, nb_tps, offset, t_origin = time(), tempo=120) -> None:
         super().__init__(vecteur_init, vecteur_rythme, l_tab, scale, output_port, tempo)
         
         self.channel = 0
@@ -189,7 +189,7 @@ class VoixEuclideGauche (Voix) : #même objet que voix gauche, mais avec un vect
 
         self.choixInstrument()
         
-        self.t_end = time()
+        self.t_end = t_origin
         
         print(self.rtm_eucl, self.l_indices_l, self.l_notes_l)
     
