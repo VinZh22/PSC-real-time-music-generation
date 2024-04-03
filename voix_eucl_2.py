@@ -63,6 +63,12 @@ class Voix :
 
             self.boolnote = True
     
+    def stopSound(self):
+        print("Stopping")
+        for i in range(128):
+            note_off = mido.Message("note_off", note = i, channel = self.channel, velocity = self.velocity)
+            self.output_port.send(note_off)
+        self.boolnote = True
 
     def changeMesure(self):
         """
@@ -99,10 +105,6 @@ class Voix :
     def changeTempo(self, tempo):
         self.oneTime = 60/tempo
     
-    def stopSound(self):
-        note_off = mido.Message("note_off", note = self.new_note, channel = self.channel, velocity = self.velocity)
-        self.output_port.send(note_off)
-        self.boolnote = True
 
 class VoixGauche (Voix) : 
     
@@ -161,7 +163,7 @@ class VoixDroite (Voix) :
     def __init__(self, vecteur_init, vecteur_rythme, scale, output_port, tempo=120) -> None:
         super().__init__(vecteur_init, vecteur_rythme, scale, output_port, tempo)
 
-        self.channel = 0
+        self.channel = 10
         self.program = 50 #piano
 
         self.choixInstrument()
@@ -292,6 +294,10 @@ class Orchestre :
             note_on = mido.Message("note_on", note = note, channel = voix.channel, velocity = voix.velocity)
             voix.output_port.send(note_on)
         self.to_play = []  
+
+    def stopSound(self):
+        for voix in self.tab_voix:
+            voix.stopSound()
 
     def changeMesure(self):
         self.root, self.quality = boucle_accords.acc_suivi(self.tonic_init, self.quality_init, self.i_changement_acc)

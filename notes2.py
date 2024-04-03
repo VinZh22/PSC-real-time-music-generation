@@ -67,9 +67,9 @@ def f_prefnotes(v, liste_notes, q = 10):
     """
     assert type(q) == int or type(q) == float, "problème d'argument"
     w = np.copy(v)
-    print(len(w), max(liste_notes))
+    #print(len(w), max(liste_notes))
     for i in liste_notes:
-        w[i] *= q
+        w[i%len(w)] *= q
     return norm(w)
         
 def f_newtab(v, root = "A", quality = "Major", seventh = "Dominant", q = 10):

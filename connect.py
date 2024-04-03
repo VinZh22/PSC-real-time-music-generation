@@ -11,7 +11,7 @@ class Connect:
             self.algo.playing = True
         else:
             self.algo.playing = False
-
+            self.algo.paused()
     def launch(self):
         return self.algo.main()
 
