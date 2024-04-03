@@ -52,6 +52,7 @@ def play_music(output_port):
     #root, quality, seventh = l_tab[0]
     seventh = "Dominant"
     root, quality = gamme_init
+    proba_faux = 0.2
     liste_first_tab = gammes.accord(root, quality, seventh)
     
     v_l = notes.f_gamme(v_l, gammes.accord(root, quality, seventh))

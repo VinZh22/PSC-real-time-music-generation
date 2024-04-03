@@ -41,10 +41,10 @@ class Algo:
         listVoix = {}
         gauche = voix.VoixGauche(self.vecteur_init, self.vecteur_rythme_l, self.l_tab, self.scale, self.output_port, self.bpm)
         droite = voix.VoixDroite(self.vecteur_init, self.vecteur_rythme_r, self.l_tab, self.scale, self.output_port, self.bpm)
-        gauche_eucl = voix.VoixEuclideGauche(self.vecteur_init, self.vecteur_rythme_r, self.l_tab, self.scale, self.output_port, self.nb_actif, self.nb_tps, self.offset, self.bpm)
-        #listVoix["gauche"] = gauche
+        #gauche_eucl = voix.VoixEuclideGauche(self.vecteur_init, self.vecteur_rythme_r, self.l_tab, self.scale, self.output_port, self.nb_actif, self.nb_tps, self.offset, self.bpm)
+        listVoix["gauche"] = gauche
         listVoix["droite"] = droite
-        listVoix["gauche_eucl"] = gauche_eucl
+        #listVoix["gauche_eucl"] = gauche_eucl
         batch = 100
         k = 0
         while not self.quit :

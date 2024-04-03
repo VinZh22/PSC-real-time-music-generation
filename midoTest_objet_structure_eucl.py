@@ -7,7 +7,10 @@ import notes2 as notes
 import numpy as np
 from time import time
 import gammes2 as gammes
-import voix_structure_eucl as voix
+import voix_eucl_2 as voix
+import random as rd
+import boucle_accords
+import time as temps
 
 
 #test variables
@@ -17,13 +20,19 @@ vecteur_rythme_l = np.array([0.2, 0.4, 0.15, 0.2, 0.05, 0, 0, 0]) #le vecteur de
 
 vecteur_init = notes.gauss(notes.init_v(), 50)
 
-l_tab = [('A', 'Minor', ''), ('D', 'Minor', ''), ('G', 'Major', ''), ('C', 'Major', '')]
+tonic_init = rd.choice(['A', 'B', 'C', 'D', 'E', 'F', 'G'])
+quality_init = rd.choice(['Major', 'Minor'])
+gamme_init = (tonic_init, quality_init)
+
+
+#l_tab = [('A', 'Minor', ''), ('D', 'Minor', ''), ('G', 'Major', ''), ('C', 'Major', '')]
+
 scale = gammes.gamme('C', 'Major') 
 
 bpm = 120
 oneTime = 60/bpm
 
-nb_actif = 8 
+nb_actif = 12 
 nb_tps = 32
 offset = 0
 
@@ -31,28 +40,19 @@ offset = 0
 # Function to play music
 def play_music():
     listVoix = {}
-    gauche = voix.VoixGauche(vecteur_init, vecteur_rythme_l, l_tab, scale, output_port, bpm)
-    droite = voix.VoixDroite(vecteur_init, vecteur_rythme_r, l_tab, scale, output_port, bpm)
-    gauche_eucl = voix.VoixEuclideGauche(vecteur_init, vecteur_rythme_r, l_tab, scale, output_port, nb_actif, nb_tps, offset, bpm)
-    #listVoix["gauche"] = gauche
-    listVoix["droite"] = droite
-    listVoix["gauche_eucl"] = gauche_eucl
+    gauche = voix.VoixGauche(vecteur_init, vecteur_rythme_l, scale, output_port, bpm)
+    droite = voix.VoixDroite(vecteur_init, vecteur_rythme_r, scale, output_port, bpm)
+    gauche_eucl = voix.VoixEuclideGauche(vecteur_init, vecteur_rythme_r, scale, output_port, nb_actif, nb_tps, offset, bpm)
+    listVoix = [gauche, droite, gauche_eucl]
+    orch = voix.Orchestre(tonic_init, quality_init, gamme_init, listVoix)
 
     while not quit :
         if playing :
             #on va laisser chaque voix décider de ce qu'ils veulent faire
             #si on a une nouvelle note à jouer, on l'ajoute dans notes
             #puis on joue toutes les notes d'un coup pour ne pas avoir de décalage.
-            notes = {}
-            t = time()
-            for i in listVoix:
-                note = listVoix[i].nextTime(t)
-                if note:
-                    notes[i] = note
-
-            for i in notes:
-                note_on = mido.Message("note_on", note = notes[i], channel = listVoix[i].channel, velocity = listVoix[i].velocity)
-                listVoix[i].output_port.send(note_on)               
+            orch.nextTime(time())
+            temps.sleep(oneTime)
             
 
 # Initialize pygame for handling user input
