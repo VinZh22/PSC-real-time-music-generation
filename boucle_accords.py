@@ -56,7 +56,7 @@ def acc_suivi(root_init, qual_init, n):
 		L = ['G','A', 'B', 'C', 'D', 'E', 'F']
 	else:
 		print("erreur acc_suivi")
-	root_fin = L[n-1]
+	root_fin = L[(n-1)%len(L)]
 	qual_fin = ''
 	if qual_init == 'Major':
 		if n == 1:

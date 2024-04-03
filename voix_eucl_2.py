@@ -1,5 +1,4 @@
 import mido
-import pygame
 import threading
 import main_gauche2 as main_gauche
 import main_droite2 as main_droite
@@ -163,7 +162,7 @@ class VoixDroite (Voix) :
         super().__init__(vecteur_init, vecteur_rythme, scale, output_port, tempo)
 
         self.channel = 0
-        self.program = 0 #piano
+        self.program = 50 #piano
 
         self.choixInstrument()
     
@@ -184,7 +183,7 @@ class VoixEuclideGauche (Voix) : #même objet que voix gauche, mais avec un vect
         super().__init__(vecteur_init, vecteur_rythme, scale, output_port, tempo)
         
         self.channel = 0
-        self.program = 10 #piano
+        self.program = 0 #piano
         
         self.rtm_eucl = Algo_rythme_euclidien.rythme_euclidien(nb_actif, nb_tps, offset)
         print(self.rtm_eucl)
@@ -287,6 +286,8 @@ class Orchestre :
         self.play_sound()
 
     def play_sound(self):
+        if len(self.to_play) > 1:
+            print("simultaneous notes")
         for voix, note in self.to_play:
             note_on = mido.Message("note_on", note = note, channel = voix.channel, velocity = voix.velocity)
             voix.output_port.send(note_on)

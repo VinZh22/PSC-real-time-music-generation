@@ -67,6 +67,7 @@ def f_prefnotes(v, liste_notes, q = 10):
     """
     assert type(q) == int or type(q) == float, "problème d'argument"
     w = np.copy(v)
+    print(len(w), max(liste_notes))
     for i in liste_notes:
         w[i] *= q
     return norm(w)
