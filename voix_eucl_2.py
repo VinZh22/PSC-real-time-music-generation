@@ -304,6 +304,13 @@ class Orchestre :
         for voix in self.tab_voix:
             voix.stopSound()
 
+
+    def change_all_tempos(self, tempo):
+        for voix in self.tab_voix:
+            voix.changeTempo(tempo)
+            voix.bpm = tempo
+
+
     def changeMesure(self):
         print("Changement de mesure", end = " ")
         self.root, self.quality = boucle_accords.acc_suivi(self.tonic_init, self.quality_init, self.i_changement_acc)

@@ -41,6 +41,17 @@ class Music_player(ctk.CTk):
         
         self.mouse_over_button = False
         self.mouse_over_slider = False
+
+         # Tempo slider
+        self.tempo_slider = ctk.CTkSlider(self, from_=60, to=180, command=self.change_tempo)
+        self.tempo_slider.place(relx=0.5, rely=0.95)
+        self.tempo_slider.set(120)
+
+        self.angle = 0
+        self.after(100, self.update)
+
+        self.mouse_over_button = False
+        self.mouse_over_slider = False
         
         
         # Speaker Button with Text Symbol
@@ -101,6 +112,12 @@ class Music_player(ctk.CTk):
         self.dropdown_menu.add_command(label="Ambiance: Jazz", command=lambda: self.set_ambiance("Jazz"))
         self.dropdown_menu.add_command(label="Ambiance: Electronic", command=lambda: self.set_ambiance("Electronic"))
 
+    def change_tempo(self, tempo):
+            tempo = self.tempo_slider.get()
+            tempo = int(tempo)
+            self.connect.update_tempo(tempo)
+    
+    
     def show_menu(self, event):
         try:
             self.dropdown_menu.tk_popup(event.x_root, event.y_root)
