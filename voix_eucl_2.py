@@ -164,7 +164,7 @@ class VoixDroite (Voix) :
         super().__init__(vecteur_init, vecteur_rythme, scale, output_port, tempo)
 
         self.channel = 10
-        self.program = 50 #piano
+        self.program = 0 #piano
 
         self.choixInstrument()
     
