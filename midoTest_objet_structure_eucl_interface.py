@@ -76,7 +76,7 @@ class Algo:
         gauche = voix.VoixGauche(self.vecteur_init, self.vecteur_rythme_l, self.scale, self.output_port, self.bpm)
         droite = voix.VoixDroite(self.vecteur_init, self.vecteur_rythme_r, self.scale, self.output_port, self.bpm)
         gauche_eucl = voix.VoixEuclideGauche(self.vecteur_init, self.vecteur_rythme_r, self.scale, self.output_port, self.nb_actif, self.nb_tps, self.offset, self.bpm)
-        listVoix = [droite]
+        listVoix = [gauche_eucl, droite]
         self.orch = voix.Orchestre(self.tonic_init, self.quality_init, self.gamme_init, listVoix)
         while not self.quit :
             if self.playing :
