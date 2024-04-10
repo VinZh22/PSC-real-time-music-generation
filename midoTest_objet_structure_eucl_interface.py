@@ -65,8 +65,8 @@ class Algo:
 
 
         synths = detect_synthesizers()
-        output_port_name = synths[0]['name']
-        self.output_port = mido.open_output(output_port_name)
+        self.output_port_name = synths[0]['name']
+        self.output_port = mido.open_output(self.output_port_name)
 
 
 # Function to play music
@@ -95,6 +95,38 @@ class Algo:
 
     def set_channel_volume(self, volume_level, channel=0):
         self.orch.set_volume(volume_level)
+    
+
+    def quit_music(self):
+        self.quit = True  # Indiquer au thread de se terminer
+
+        if self.music_thread.is_alive():
+            self.music_thread.join(timeout=10)  # Attendre jusqu'à 10 secondes pour que le thread se termine
+
+        if self.music_thread.is_alive():
+            print("Le thread de musique ne s'est pas terminé correctement.")
+        else:
+            print("Le thread de musique s'est terminé proprement.")
+
+        self.output_port.close()  # Fermer le port après que le thread soit terminé
+        print ("Port fermé")
+
+
+
+    def restart(self):
+        """Redémarre la lecture de la musique."""
+        self.quit_music()  # S'assurer que tout est arrêté et fermé proprement
+        self.quit = False  # Réinitialiser le signal d'arrêt
+        self.playing = False  # Activer la lecture
+        # Recréer et démarrer le thread de musique
+        self.music_thread = threading.Thread(target=self.play_music)
+        print("Redémarrage de la musique")
+        self.output_port = mido.open_output(self.output_port_name)
+        self.music_thread.start()
+        print("Musique redémarrée")
+
+        
+  
         
 
     # Set up MIDI output port (replace 'Your MIDI Port' with your actual MIDI output port name)
