@@ -216,7 +216,6 @@ class VoixEuclideGauche (Voix) : #même objet que voix gauche, mais avec un vect
 
         #la liste des positions des notes dans l'accord
         l_indices_l = notes.search_indices(liste_first_tab, liste_notes_l)
-        print(l_indices_l) 
         return l_indices_l
     
     def gen_l_notes_l(self):
@@ -291,8 +290,6 @@ class Orchestre :
         self.play_sound()
 
     def play_sound(self):
-        if len(self.to_play) > 1:
-            print("simultaneous notes")
         for voix, note in self.to_play:
             note_on = mido.Message("note_on", note = note, channel = voix.channel, velocity = voix.velocity)
             voix.output_port.send(note_on)
@@ -303,6 +300,7 @@ class Orchestre :
             voix.stopSound()
 
     def changeMesure(self):
+        print("Changement de mesure", end = " ")
         self.root, self.quality = boucle_accords.acc_suivi(self.tonic_init, self.quality_init, self.i_changement_acc)
         self.i_changement_acc = boucle_accords.nb_suiv(self.quality_init, self.i_changement_acc)
         self.debut_bar += self.oneTime*8
