@@ -248,13 +248,16 @@ class VoixEuclideGauche (Voix) : #même objet que voix gauche, mais avec un vect
         if self.boolnote: #une nouvelle note
             self.new_note = self.create_newNote()            
             self.boolnote = False #sinon nextime va renvoyer des notes en boucle : on en veut juste une
+            
             return self.new_note
+
 
         
         elif time() > self.t_end : #arrêter la note en cours
             note_off = mido.Message("note_off", note = self.new_note, channel = self.channel, velocity = self.velocity)
             self.output_port.send(note_off)
             self.t_end += self.oneTime
+            print(self.boolnote)
             self.avanceNote()
 
 
