@@ -183,6 +183,7 @@ class VoixEuclideGauche (Voix) : #même objet que voix gauche, mais avec un vect
         
         self.rtm_eucl = Algo_rythme_euclidien.rythme_euclidien(nb_actif, nb_tps, offset)
         self.i_rtm = 0
+        self.i_note = 0
         self.len_rtm = len(self.rtm_eucl) #taille du tableau euclidien
         self.l_indices_l = self.init_l_indices_l()
         self.l_notes_l = self.gen_l_notes_l()
@@ -200,7 +201,7 @@ class VoixEuclideGauche (Voix) : #même objet que voix gauche, mais avec un vect
         v_l = notes.f_gamme(v_l, gammes.accord(root, quality, seventh))
         liste_notes_l = []
     
-        for i in range(0, self.len_rtm//4 + 1): #a priori on ira jamais plus loin que 1/4 de la taille de rtm_eucl
+        for i in range(0, self.len_rtm//2 + 1): #a priori on ira jamais plus loin que 1/2 de la taille de rtm_eucl
             new_note_l = main_droite.gen(v_l)
             liste_notes_l.append(new_note_l)
 
@@ -215,18 +216,19 @@ class VoixEuclideGauche (Voix) : #même objet que voix gauche, mais avec un vect
     
     def changeMesure(self):
         super().changeMesure()
-        self.i_rtm = 0
+        self.i_note = 0
         self.l_notes_l = self.gen_l_notes_l()
         self.v = self.vecteur_init
         self.v = notes.f_gamme(self.v, gammes.accord(self.root, self.quality, self.seventh))
 
     def create_newNote(self):
-        new_note_l = self.l_notes_l[self.l_indices_l[self.i_rtm]]
+        new_note_l = self.l_notes_l[self.l_indices_l[self.i_note]]
         return new_note_l
     
     def avanceNote(self):
         bitnote = self.rtm_eucl[self.i_rtm]  #le bit du temps courant
         self.i_rtm = (self.i_rtm + 1)%self.len_rtm
+        self.i_note += 1
         self.boolnote = bool(bitnote)
     
     def nextTime(self, t = time()):
