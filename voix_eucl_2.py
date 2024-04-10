@@ -198,6 +198,7 @@ class VoixEuclideGauche (Voix) : #même objet que voix gauche, mais avec un vect
     
     def init_later(self):
         self.i_rtm = 0
+        self.i_note = 0
         self.len_rtm = len(self.rtm_eucl) #taille du tableau euclidien
         self.l_indices_l = self.init_l_indices_l()
         self.l_notes_l = self.gen_l_notes_l()
@@ -210,7 +211,7 @@ class VoixEuclideGauche (Voix) : #même objet que voix gauche, mais avec un vect
         v_l = notes.f_gamme(v_l, gammes.accord(self.root, self.quality, self.seventh))
         liste_notes_l = []
     
-        for i in range(0, self.len_rtm//4 + 1): #a priori on ira jamais plus loin que 1/4 de la taille de rtm_eucl
+        for i in range(0, self.len_rtm//2 + 1): #a priori on ira jamais plus loin que 1/4 de la taille de rtm_eucl
             new_note_l = main_droite.gen(v_l)
             liste_notes_l.append(new_note_l)
 
@@ -224,7 +225,7 @@ class VoixEuclideGauche (Voix) : #même objet que voix gauche, mais avec un vect
     
     def changeMesure(self):
         super().changeMesure()
-        self.i_rtm = 0
+        self.i_note = 0
         self.l_notes_l = self.gen_l_notes_l()
         self.v = self.vecteur_init
         self.v = notes.f_gamme(self.v, gammes.accord(self.root, self.quality, self.seventh))
@@ -232,12 +233,13 @@ class VoixEuclideGauche (Voix) : #même objet que voix gauche, mais avec un vect
     def create_newNote(self):
         if self.i_rtm>len(self.l_indices_l)-1:
             print("erreur")
-        new_note_l = self.l_notes_l[self.l_indices_l[self.i_rtm]]
+        new_note_l = self.l_notes_l[self.l_indices_l[self.i_note]]
         return new_note_l
     
     def avanceNote(self):
         bitnote = self.rtm_eucl[self.i_rtm]  #le nombre de temps de la note que l'on va jouer
         self.i_rtm = (self.i_rtm + 1)%len(self.l_indices_l)
+        self.i_note += 1
         self.boolnote = bool(bitnote)
     
     def nextTime(self, t = time()):
@@ -255,6 +257,7 @@ class VoixEuclideGauche (Voix) : #même objet que voix gauche, mais avec un vect
             note_off = mido.Message("note_off", note = self.new_note, channel = self.channel, velocity = self.velocity)
             self.output_port.send(note_off)
             self.t_end += self.oneTime
+            print(self.boolnote, self.i_rtm, self.i_note)
             self.avanceNote()
 
 
