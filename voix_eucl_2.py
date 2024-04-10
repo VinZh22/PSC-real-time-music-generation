@@ -77,6 +77,10 @@ class Voix :
         """
         pass
     
+    def changeParamMesure(self, root, quality):
+        self.root = root
+        self.quality = quality
+
     def create_newNote(self):
         decalage = rd.choices([-1,0,1], weights=[self.proba_faux/2, 1-self.proba_faux, self.proba_faux/2], k=1)[0]
         return main_droite.gen(self.v) + decalage
@@ -197,6 +201,7 @@ class VoixEuclideGauche (Voix) : #même objet que voix gauche, mais avec un vect
         self.len_rtm = len(self.rtm_eucl) #taille du tableau euclidien
         self.l_indices_l = self.init_l_indices_l()
         self.l_notes_l = self.gen_l_notes_l()
+        print(self.l_indices_l)
 
 
     def init_l_indices_l(self):
@@ -283,8 +288,6 @@ class Orchestre :
         
         if time() >= self.oneTime*8 + self.debut_bar: #début de mesure par la fin de la precedente
            self.changeMesure()
-           for voix in self.tab_voix:
-               voix.changeMesure()
         self.play_sound()
 
     def play_sound(self):
@@ -304,6 +307,9 @@ class Orchestre :
         self.i_changement_acc = boucle_accords.nb_suiv(self.quality_init, self.i_changement_acc)
         self.debut_bar += self.oneTime*8
         print(self.root, self.quality, self.seventh)
+        for voix in self.tab_voix:
+            voix.changeParamMesure(self.root, self.quality)
+            voix.changeMesure()
 
     def get_seventh(self):
         return self.seventh
