@@ -209,10 +209,15 @@ class VoixEuclideGauche (Voix) : #même objet que voix gauche, mais avec un vect
         liste_first_tab = gammes.accord(self.root, self.quality, self.seventh)
         v_l = notes.f_gamme(v_l, gammes.accord(self.root, self.quality, self.seventh))
         liste_notes_l = []
+        new_note_l = -1
     
-        for i in range(0, self.len_rtm//4 + 1): #a priori on ira jamais plus loin que 1/4 de la taille de rtm_eucl
-            new_note_l = main_droite.gen(v_l)
-            liste_notes_l.append(new_note_l)
+        for i in range(0, self.len_rtm//2 + 1): #a priori on ira jamais plus loin que 1/2t de la taille de rtm_eucl
+            nouvelle_note = main_droite.gen(v_l)
+            if nouvelle_note == new_note_l and random.random() < 0.5:
+                i -= 1
+            else:
+                nouvelle_note = new_note_l
+                liste_notes_l.append(new_note_l)
 
         #la liste des positions des notes dans l'accord
         l_indices_l = notes.search_indices(liste_first_tab, liste_notes_l)
