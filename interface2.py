@@ -50,7 +50,7 @@ class Music_player(ctk.CTk):
         self.speaker_button.bind("<Leave>", self.on_leave_button)
 
         # Volume Slider - initially hidden
-        self.volume_slider = ctk.CTkSlider(self, from_=0, to=100)
+        self.volume_slider = ctk.CTkSlider(self, from_=0, to=100, command=self.on_volume_change)
         self.volume_slider.place(relx=0.25, rely=0.83, anchor="center")
         self.volume_slider.set(50)  # Default volume level
         self.volume_slider.place_forget()  # Hide slider initially
@@ -87,8 +87,7 @@ class Music_player(ctk.CTk):
         # Prepare the dropdown menu (not visible until hovered)
         self.prepare_menu()
         self.connect = connect.Connect()
-
-
+        
     def on_closing(self):
         if messagebox.askokcancel("Quit", "Do you want to quit?"):
             self.connect.quit()
@@ -118,6 +117,9 @@ class Music_player(ctk.CTk):
     def set_ambiance(self, ambiance):
         print(f"Ambiance set to: {ambiance}")
         
+    def on_volume_change(self, event=None):
+        current_volume = self.volume_slider.get()  
+        self.connect.adjust_volume(current_volume)
  
     def start_recording(self):
         print("Recording started...") 
@@ -199,7 +201,7 @@ class Music_player(ctk.CTk):
                 self.start_time = time.time() - self.elapsed_time
             self.update_timer()
             self.play_pause_button.configure(text="⏸")
-            #self.update()  # Start or continue rotation
+            self.update()  # Start or continue rotation
         else:
             self.start_time = None
             self.play_pause_button.configure(text="▶")
@@ -210,7 +212,7 @@ class Music_player(ctk.CTk):
  
  
 if __name__ == "__main__":
-    mp = Music_player('disc.jpg')
+    mp = Music_player('discc.png')
     mp.mainloop()   
     
     

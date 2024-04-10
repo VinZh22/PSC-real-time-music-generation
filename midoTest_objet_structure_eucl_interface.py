@@ -43,7 +43,7 @@ class Algo:
         #test variables
         self.vecteur_rythme_r = notes.norm(np.array([2, 4, 1, 3, 1, 0, 0, 0])) #le vecteur de proba des rythmes
         self.vecteur_rythme_l = np.array([0.2, 0.4, 0.15, 0.2, 0.05, 0, 0, 0]) #le vecteur de probabilité des rythmes
-
+        self.volume_level = 127   # Volume level (0-127)
         self.vecteur_init = notes.gauss(notes.init_v(), 50)
 
         self.l_tab = [('A', 'Minor', ''), ('D', 'Minor', ''), ('G', 'Major', ''), ('C', 'Major', '')]
@@ -62,6 +62,7 @@ class Algo:
         # Variable to control music playback
         self.playing = False
         self.quit = False
+
 
         synths = detect_synthesizers()
         output_port_name = synths[0]['name']
@@ -91,6 +92,10 @@ class Algo:
 
     def paused(self):
         self.orch.stopSound()
+
+    def set_channel_volume(self, volume_level, channel=0):
+        self.orch.set_volume(volume_level)
+        
 
     # Set up MIDI output port (replace 'Your MIDI Port' with your actual MIDI output port name)
     def main(self):

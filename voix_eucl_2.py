@@ -287,6 +287,11 @@ class Orchestre :
                voix.changeMesure()
         self.play_sound()
 
+    def set_volume(self, volume_level):
+        for voix in self.tab_voix:
+            volume_message = mido.Message('control_change', channel=voix.channel, control=7, value=volume_level)
+            voix.output_port.send(volume_message)
+
     def play_sound(self):
         if len(self.to_play) > 1:
             print("simultaneous notes")

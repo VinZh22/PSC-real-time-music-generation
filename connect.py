@@ -14,6 +14,9 @@ class Connect:
             self.algo.paused()
     def launch(self):
         return self.algo.main()
+    
+    def adjust_volume(self, volume_level):
+        self.algo.set_channel_volume(int((volume_level / 100.0) * 127))
 
     def quit(self):
         self.algo.quit = True

@@ -46,7 +46,7 @@ def play_music():
 
             for i in notes:
                 note_on = mido.Message("note_on", note = notes[i], channel = listVoix[i].channel, velocity = listVoix[i].velocity)
-                listVoix[i].output_port.send(note_on)                
+                listVoix[i].output_port.send(note_on)            
 
 
 # Initialize pygame for handling user input
