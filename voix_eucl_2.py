@@ -309,7 +309,7 @@ class Orchestre :
         self.root, self.quality = boucle_accords.acc_suivi(self.tonic_init, self.quality_init, self.i_changement_acc)
         self.i_changement_acc = boucle_accords.nb_suiv(self.quality_init, self.i_changement_acc)
         self.debut_bar += self.oneTime*8
-        print(self.root, self.quality, self.seventh)
+        #print(self.root, self.quality, self.seventh)
         for voix in self.tab_voix:
             voix.changeParamMesure(self.root, self.quality)
             voix.changeMesure()
