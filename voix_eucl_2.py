@@ -16,7 +16,7 @@ class Voix :
     elle sert de classe mère pour toutes les autres voix
     Si vous avez des changements qui s'appliquent à toutes les voix, veuillez les mettre ici
     """
-    def __init__(self, vecteur_init, vecteur_rythme, scale, output_port, tempo = 120, proba_faux = 0.01) -> None:
+    def __init__(self, vecteur_init, vecteur_rythme, scale, output_port, tempo = 120, proba_faux = 0.) -> None:
         """
         on initialise toutes les variables
         """
@@ -83,6 +83,8 @@ class Voix :
 
     def create_newNote(self):
         decalage = rd.choices([-1,0,1], weights=[self.proba_faux/2, 1-self.proba_faux, self.proba_faux/2], k=1)[0]
+        if decalage!=0:
+            print("fausse note")
         return main_droite.gen(self.v) + decalage
 
     def durationNote(self):
@@ -265,7 +267,7 @@ class Orchestre :
         self.tab_voix = tab_voix
 
         self.oneTime = tab_voix[0].oneTime
-        self.debut_bar = time() - 8*self.oneTime
+        self.debut_bar = time() # 8*self.oneTime
 
         self.root, self.quality = self.gamme_init
         self.seventh = "Dominant"
@@ -305,7 +307,6 @@ class Orchestre :
             voix.stopSound()
 
     def changeMesure(self):
-        print("Changement de mesure", end = " ")
         self.root, self.quality = boucle_accords.acc_suivi(self.tonic_init, self.quality_init, self.i_changement_acc)
         self.i_changement_acc = boucle_accords.nb_suiv(self.quality_init, self.i_changement_acc)
         self.debut_bar += self.oneTime*8

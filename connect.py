@@ -1,4 +1,4 @@
-import interface2 as interface
+import interface as interface
 import midoTest_objet_structure_eucl_interface as algo
 
 class Connect:
