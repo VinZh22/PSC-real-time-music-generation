@@ -41,6 +41,17 @@ class Music_player(ctk.CTk):
         
         self.mouse_over_button = False
         self.mouse_over_slider = False
+
+         # Tempo slider
+        self.tempo_slider = ctk.CTkSlider(self, from_=60, to=180, command=self.change_tempo)
+        self.tempo_slider.place(relx=0.5, rely=0.95)
+        self.tempo_slider.set(120)
+
+        self.angle = 0
+        self.after(100, self.update)
+
+        self.mouse_over_button = False
+        self.mouse_over_slider = False
         
         
         # Speaker Button with Text Symbol
@@ -64,7 +75,7 @@ class Music_player(ctk.CTk):
         
         # Repeat Button
         self.repeat_button = ctk.CTkButton(self, text="⟳", font=ctk.CTkFont(size=20), command=self.toggle_repeat, width=50, height=50)
-        self.repeat_button.place(relx=0.7, rely=0.71)  # Adjust position as needed
+        self.repeat_button.place(relx=0.7, rely=0.71) 
 
         # Timer label
         self.timer_label = ctk.CTkLabel(self, text="00:00", width=100, height=50)
@@ -101,6 +112,12 @@ class Music_player(ctk.CTk):
         self.dropdown_menu.add_command(label="Ambiance: Jazz", command=lambda: self.set_ambiance("Jazz"))
         self.dropdown_menu.add_command(label="Ambiance: Electronic", command=lambda: self.set_ambiance("Electronic"))
 
+    def change_tempo(self, tempo):
+            tempo = self.tempo_slider.get()
+            tempo = int(tempo)
+            self.connect.update_tempo(tempo)
+    
+    
     def show_menu(self, event):
         try:
             self.dropdown_menu.tk_popup(event.x_root, event.y_root)
@@ -134,12 +151,14 @@ class Music_player(ctk.CTk):
             self.after(1000, self.update_timer)
         
     def toggle_repeat(self):
-        self.repeat_music = not self.repeat_music
-        if self.repeat_music:
-            self.repeat_button.configure(fg_color='grey')  # Indicate active state
-        else:
-            self.repeat_button.configure(fg_color='green')  # Return to default state
-        print(f"Repeat mode {'on' if self.repeat_music else 'off'}.")
+        self.is_playing = False
+        self.play_pause_button.configure(text="▶")
+        if self.canvas_obj is not None:
+            self.canvas.delete(self.canvas_obj)
+            self.canvas_obj = None
+            self.tkimage = None
+        self.connect.restart_music()  
+        print("Music restarted")
 
     def on_enter_button(self, event):
         self.mouse_over_button = True

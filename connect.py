@@ -15,9 +15,15 @@ class Connect:
     def launch(self):
         return self.algo.main()
     
+    def restart_music(self):
+        self.algo.restart()
+    
     def adjust_volume(self, volume_level):
         self.algo.set_channel_volume(int((volume_level / 100.0) * 127))
 
+    def update_tempo(self, tempo):
+        self.algo.orch.change_all_tempos(tempo)
+    
     def quit(self):
         self.algo.quit = True
         self.algo.music_thread.join()
