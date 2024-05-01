@@ -22,6 +22,8 @@ class Connect:
         self.algo.set_channel_volume(int((volume_level / 100.0) * 127))
 
     def update_tempo(self, tempo):
+        self.algo.bpm = tempo
+        self.algo.oneTime = 60 / self.algo.bpm
         self.algo.orch.change_all_tempos(tempo)
     
     def quit(self):

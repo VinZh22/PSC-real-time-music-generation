@@ -93,10 +93,12 @@ class Voix :
         """
         return 0
 
-    def choixInstrument(self):
+    def choixInstrument(self, program = -1):
         """
         Appelée pour chaque voix qui aura son propre instrument, et son canal (channel) de diffusion
         """
+        if program != -1:
+            self.program = program
         instru = mido.Message("program_change", program = self.program, channel = self.channel)
         self.output_port.send(instru)
     

@@ -56,7 +56,7 @@ class Algo:
         self.bpm = 120
         self.oneTime = 60/self.bpm
 
-        self.nb_actif = 8 
+        self.nb_actif = 25 
         self.nb_tps = 32
         self.offset = 0
         # Variable to control music playback
@@ -65,6 +65,7 @@ class Algo:
 
 
         synths = detect_synthesizers()
+        print ("Synthesizers found: ", synths)
         self.output_port_name = synths[0]['name']
         self.output_port = mido.open_output(self.output_port_name)
 
@@ -77,6 +78,9 @@ class Algo:
         droite = voix.VoixDroite(self.vecteur_init, self.vecteur_rythme_r, self.scale, self.output_port, self.bpm)
         gauche_eucl = voix.VoixEuclideGauche(self.vecteur_init, self.vecteur_rythme_r, self.scale, self.output_port, self.nb_actif, self.nb_tps, self.offset, self.bpm)
         listVoix = [gauche_eucl, droite]
+        #droite.choixInstrument(19)
+        #gauche_eucl.choixInstrument(19)
+
         self.orch = voix.Orchestre(self.tonic_init, self.quality_init, self.gamme_init, listVoix)
         while not self.quit :
             if self.playing :

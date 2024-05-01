@@ -12,6 +12,7 @@ ctk.set_default_color_theme("blue")
 appWidth, appHeight = 600, 600
 
 
+
 class Music_player(ctk.CTk):
     def __init__(self, filename, **kwargs):
         super().__init__(**kwargs)
@@ -128,7 +129,7 @@ class Music_player(ctk.CTk):
         # Opens a new window for tempo adjustment
         tempo_window = ctk.CTkToplevel(self)
         tempo_window.geometry("250x100")
-        tempo_slider = ctk.CTkSlider(tempo_window, from_=60, to=180)
+        tempo_slider = ctk.CTkSlider(tempo_window, from_=60, to=200)
         tempo_slider.pack(pady=20)
 
     def set_ambiance(self, ambiance):
