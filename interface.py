@@ -4,6 +4,7 @@ from PIL import Image
 from tkinter import Menu
 import time 
 import connect
+from tkinter import simpledialog
 from tkinter import messagebox
 
 
@@ -43,9 +44,12 @@ class Music_player(ctk.CTk):
         self.mouse_over_button = False
         self.mouse_over_slider = False
 
-         # Tempo slider
+         # Tempo 
+        self.tempo_label = ctk.CTkLabel(self, text="Tempo: 120 BPM")
+        self.tempo_label.place(relx=0.42, rely=0.9)
+
         self.tempo_slider = ctk.CTkSlider(self, from_=60, to=180, command=self.change_tempo)
-        self.tempo_slider.place(relx=0.5, rely=0.95)
+        self.tempo_slider.place(relx=0.34, rely=0.95)
         self.tempo_slider.set(120)
 
         self.angle = 0
@@ -106,18 +110,45 @@ class Music_player(ctk.CTk):
             self.destroy()
 
     def prepare_menu(self):
-        self.dropdown_menu = Menu(self, tearoff=0)
-        self.dropdown_menu.add_command(label="Set Tempo", command=self.open_tempo_slider)
+        menubar = Menu(self)
+        self.config(menu=menubar)
+        
+        # Dropdown menu
+        self.dropdown_menu = Menu(menubar, tearoff=0)
+        
+        self.dropdown_menu.add_command(label="Instru Droite guitarre", command=lambda: self.set_instru(1, 19))
+        self.dropdown_menu.add_command(label="Instru Gauche guitarre", command=lambda: self.set_instru(0, 19))
+        self.dropdown_menu.add_command(label="Instru Droite piano", command=lambda: self.set_instru(1, 0))
+        self.dropdown_menu.add_command(label="Instru Gauche piano", command=lambda: self.set_instru(0, 0))
         self.dropdown_menu.add_separator()
-        self.dropdown_menu.add_command(label="Ambiance: Classical", command=lambda: self.set_ambiance("Classical"))
-        self.dropdown_menu.add_command(label="Ambiance: Jazz", command=lambda: self.set_ambiance("Jazz"))
-        self.dropdown_menu.add_command(label="Ambiance: Electronic", command=lambda: self.set_ambiance("Electronic"))
+        
+        # Add an input option
+        self.dropdown_menu.add_command(label="Instrument main droite", command=self.set_instru_input_1)
+        self.dropdown_menu.add_command(label="Instrument main gauche", command=self.set_instru_input_0)
 
     def change_tempo(self, tempo):
             tempo = self.tempo_slider.get()
             tempo = int(tempo)
+            self.tempo_label.configure(text=f"Tempo: {tempo} BPM")
             self.connect.update_tempo(tempo)
+
+
+
+    def set_instru_input(self,voix):
+        if voix == 0:
+            nom = "main gauche"
+        else:
+            nom = "main droite"
+        number = simpledialog.askinteger("Input", f"Choisir un instrument pour la {nom} (0-127):", parent=self)
+        if number is not None:
+            print(f"The user inputted: {number}")
+            self.set_instru(voix, number)
     
+    def set_instru_input_0(self):
+        self.set_instru_input(0)
+
+    def set_instru_input_1(self):
+        self.set_instru_input(1)
     
     def show_menu(self, event):
         try:
@@ -125,15 +156,11 @@ class Music_player(ctk.CTk):
         finally:
             self.dropdown_menu.grab_release()
 
-    def open_tempo_slider(self):
-        # Opens a new window for tempo adjustment
-        tempo_window = ctk.CTkToplevel(self)
-        tempo_window.geometry("250x100")
-        tempo_slider = ctk.CTkSlider(tempo_window, from_=60, to=200)
-        tempo_slider.pack(pady=20)
+    
 
-    def set_ambiance(self, ambiance):
-        print(f"Ambiance set to: {ambiance}")
+    def set_instru(self, voix = None, instrument=0):
+        if voix is not None:
+            self.connect.set_instrument(voix, instrument)
         
     def on_volume_change(self, event=None):
         current_volume = self.volume_slider.get()  

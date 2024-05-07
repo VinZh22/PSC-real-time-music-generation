@@ -80,6 +80,7 @@ class Algo:
         listVoix = [gauche_eucl, droite]
         #droite.choixInstrument(19)
         #gauche_eucl.choixInstrument(19)
+        
 
         self.orch = voix.Orchestre(self.tonic_init, self.quality_init, self.gamme_init, listVoix)
         while not self.quit :

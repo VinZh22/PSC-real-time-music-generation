@@ -25,6 +25,9 @@ class Connect:
         self.algo.bpm = tempo
         self.algo.oneTime = 60 / self.algo.bpm
         self.algo.orch.change_all_tempos(tempo)
+
+    def set_instrument(self, voix, instrument):
+        self.algo.orch.tab_voix[voix].choixInstrument(instrument)
     
     def quit(self):
         self.algo.quit = True
