@@ -56,7 +56,7 @@ class Algo:
         self.bpm = 120
         self.oneTime = 60/self.bpm
 
-        self.nb_actif = 8 
+        self.nb_actif = 24 
         self.nb_tps = 32
         self.offset = 0
         # Variable to control music playback
