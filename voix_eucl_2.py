@@ -171,7 +171,7 @@ class VoixDroite (Voix) :
     def __init__(self, vecteur_init, vecteur_rythme, scale, output_port, tempo=120) -> None:
         super().__init__(vecteur_init, vecteur_rythme, scale, output_port, tempo)
 
-        self.channel = 10
+        self.channel = 5
         self.program = 0 #piano
 
         self.choixInstrument()
@@ -193,7 +193,7 @@ class VoixEuclideGauche (Voix) : #même objet que voix gauche, mais avec un vect
         super().__init__(vecteur_init, vecteur_rythme, scale, output_port, tempo)
         
         self.channel = 0
-        self.program = 0 #piano
+        self.program = 27 #piano
         
         self.rtm_eucl = Algo_rythme_euclidien.rythme_euclidien(nb_actif, nb_tps, offset)
         print(self.rtm_eucl)
