@@ -262,11 +262,12 @@ class VoixEuclideGauche (Voix) : #même objet que voix gauche, mais avec un vect
 
 
 class Orchestre :
-    def __init__(self, tonic_init, quality_init, gamme_init, tab_voix) -> None:
+    def __init__(self, tonic_init, quality_init, gamme_init, tab_voix, jouees) -> None:
         self.tonic_init = tonic_init
         self.quality_init = quality_init
         self.gamme_init = gamme_init
         self.tab_voix = tab_voix
+        self.jouees = jouees
 
         self.oneTime = tab_voix[0].oneTime
         self.debut_bar = time() # 8*self.oneTime
@@ -285,9 +286,10 @@ class Orchestre :
     
     def nextTime(self, t = time()):
         for voix in self.tab_voix:
-            note = voix.nextTime(t)
-            if note:
-                self.to_play.append([voix,note])
+            if self.jouees[self.tab_voix.index(voix)]:    
+                note = voix.nextTime(t)
+                if note:
+                    self.to_play.append([voix,note])
         
         if time() >= self.oneTime*8 + self.debut_bar: #début de mesure par la fin de la precedente
            self.changeMesure()

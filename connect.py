@@ -27,7 +27,12 @@ class Connect:
         self.algo.orch.change_all_tempos(tempo)
 
     def set_instrument(self, voix, instrument):
-        self.algo.orch.tab_voix[voix].choixInstrument(instrument)
+        if instrument >= 0 and instrument < 128:
+            self.algo.orch.jouees[voix] = True
+            self.algo.orch.tab_voix[voix].choixInstrument(instrument)
+        else :
+            self.algo.orch.jouees[voix] = False
+            print(self.algo.orch.jouees)
     
     def quit(self):
         self.algo.quit = True

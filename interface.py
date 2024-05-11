@@ -116,8 +116,8 @@ class Music_player(ctk.CTk):
         # Dropdown menu
         self.dropdown_menu = Menu(menubar, tearoff=0)
         
-        self.dropdown_menu.add_command(label="Instru Droite guitarre", command=lambda: self.set_instru(1, 19))
-        self.dropdown_menu.add_command(label="Instru Gauche guitarre", command=lambda: self.set_instru(0, 19))
+        self.dropdown_menu.add_command(label="Instru Droite guitare", command=lambda: self.set_instru(1, 25))
+        self.dropdown_menu.add_command(label="Instru Gauche guitare", command=lambda: self.set_instru(0, 25))
         self.dropdown_menu.add_command(label="Instru Droite piano", command=lambda: self.set_instru(1, 0))
         self.dropdown_menu.add_command(label="Instru Gauche piano", command=lambda: self.set_instru(0, 0))
         self.dropdown_menu.add_separator()
@@ -139,7 +139,10 @@ class Music_player(ctk.CTk):
             nom = "main gauche"
         else:
             nom = "main droite"
-        number = simpledialog.askinteger("Input", f"Choisir un instrument pour la {nom} (0-127):", parent=self)
+        number = simpledialog.askinteger("Sélection d'instrument",
+                f"Choisir un instrument pour la {nom} (0-127) ou -1 pour retirer cette voix:",
+                parent=self)
+
         if number is not None:
             print(f"The user inputted: {number}")
             self.set_instru(voix, number)

@@ -25,6 +25,7 @@ quality_init = rd.choice(['Major', 'Minor'])
 gamme_init = (tonic_init, quality_init)
 
 
+
 #l_tab = [('A', 'Minor', ''), ('D', 'Minor', ''), ('G', 'Major', ''), ('C', 'Major', '')]
 
 scale = gammes.gamme('C', 'Major') 
@@ -44,7 +45,8 @@ def play_music():
     droite = voix.VoixDroite(vecteur_init, vecteur_rythme_r, scale, output_port, bpm)
     gauche_eucl = voix.VoixEuclideGauche(vecteur_init, vecteur_rythme_r, scale, output_port, nb_actif, nb_tps, offset, bpm)
     listVoix = [gauche, droite, gauche_eucl]
-    orch = voix.Orchestre(tonic_init, quality_init, gamme_init, listVoix)
+    jouees = {0: True, 1: True}
+    orch = voix.Orchestre(tonic_init, quality_init, gamme_init, listVoix, jouees)
 
     while not quit :
         if playing :
