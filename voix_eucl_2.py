@@ -260,6 +260,27 @@ class VoixEuclideGauche (Voix) : #même objet que voix gauche, mais avec un vect
             self.t_end += self.oneTime
             self.avanceNote()
 
+class VoixSDM (Voix) :
+    def __init__(self, vecteur_init, vecteur_rythme, scale, output_port, nb_rythm, octave, degre, tempo=120) -> None:
+        super().__init__(vecteur_init, vecteur_rythme, scale, output_port, tempo)
+
+        self.channel = 10
+        self.program = 0 #piano
+        self.rtm = notes.rythme_sdm(nb_rythm)
+        self.choixInstrument()
+        self.v = notes.dirac(self.v, gammes.lettre_nombre(self.root + 12*octave + degre-1) + 24)
+    
+    def changeMesure(self):
+        super().changeMesure()
+        self.v = notes.dirac(self.v, gammes.lettre_nombre(self.root) + 24)
+    
+    def create_newNote(self):
+        return super().create_newNote()
+    
+    def durationNote(self):
+        tp = main_droite.gen(self.vrtm)
+        t_end = tp*self.oneTime
+        return t_end
 
 class Orchestre :
     def __init__(self, tonic_init, quality_init, gamme_init, tab_voix, jouees) -> None:
