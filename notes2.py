@@ -160,4 +160,13 @@ def dirac(v, val):
     return w
 
 def rythme_sdm(n):
-    return [2,2,2,2]
+    if n == 0:
+        return [8]
+    if n == 1:
+        return [4,4]
+    if n == 2:
+        return [2,2,2,2]
+    if n == 3:
+        return [3,3,2]
+    else:
+        return 8*[1]
