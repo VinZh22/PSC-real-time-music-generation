@@ -33,6 +33,11 @@ class Connect:
         else :
             self.algo.orch.jouees[voix] = False
             print(self.algo.orch.jouees)
+
+    def proba_fausse_note(self, proba):
+        tab = self.algo.orch.tab_voix
+        for i in range(len(tab)):
+            tab[i].proba_faux = proba
     
     def quit(self):
         self.algo.quit = True

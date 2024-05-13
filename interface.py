@@ -125,6 +125,9 @@ class Music_player(ctk.CTk):
         # Add an input option
         self.dropdown_menu.add_command(label="Instrument main droite", command=self.set_instru_input_1)
         self.dropdown_menu.add_command(label="Instrument main gauche", command=self.set_instru_input_0)
+        self.dropdown_menu.add_separator()
+
+        self.dropdown_menu.add_command(label="Proba fausse note", command=self.fausse_note)
 
     def change_tempo(self, tempo):
             tempo = self.tempo_slider.get()
@@ -132,7 +135,11 @@ class Music_player(ctk.CTk):
             self.tempo_label.configure(text=f"Tempo: {tempo} BPM")
             self.connect.update_tempo(tempo)
 
-
+    def fausse_note(self):
+        proba = simpledialog.askfloat("Proba fausse note", "Choisir la probabilité de fausse note (0-1):", parent=self)
+        if proba is not None:
+            print(f"The user inputted: {proba}")
+            self.connect.proba_fausse_note (proba)
 
     def set_instru_input(self,voix):
         if voix == 0:
@@ -184,6 +191,9 @@ class Music_player(ctk.CTk):
     def toggle_repeat(self):
         self.is_playing = False
         self.play_pause_button.configure(text="▶")
+        self.start_time = None
+        self.elapsed_time = 0
+        self.timer_label.configure(text="00:00")
         if self.canvas_obj is not None:
             self.canvas.delete(self.canvas_obj)
             self.canvas_obj = None
