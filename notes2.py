@@ -152,3 +152,21 @@ def search_indices(v, val):
         l_indices.append(corr[i])
 
     return l_indices
+
+def dirac(v, val):
+    """renvoie un vecteur de dirac centré sur val"""
+    w = v*0
+    w[val] = 1
+    return w
+
+def rythme_sdm(n):
+    if n == 0:
+        return [8]
+    if n == 1:
+        return [4,4]
+    if n == 2:
+        return [2,2,2,2]
+    if n == 3:
+        return [3,3,2]
+    else:
+        return 8*[1]

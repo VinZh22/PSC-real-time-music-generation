@@ -77,12 +77,18 @@ class Algo:
         gauche = voix.VoixGauche(self.vecteur_init, self.vecteur_rythme_l, self.scale, self.output_port, self.bpm)
         droite = voix.VoixDroite(self.vecteur_init, self.vecteur_rythme_r, self.scale, self.output_port, self.bpm)
         gauche_eucl = voix.VoixEuclideGauche(self.vecteur_init, self.vecteur_rythme_r, self.scale, self.output_port, self.nb_actif, self.nb_tps, self.offset, self.bpm)
-        listVoix = [gauche_eucl, droite]
+        nb_rythm = 2   # à choisir ! 
+        octave = 6
+        degre = 1
+        sdm = voix.VoixSDM(self.vecteur_init, self.vecteur_rythme_r, self.scale, self.output_port, nb_rythm, octave, degre, self.bpm)
+        listVoix = [gauche_eucl, droite, sdm]
         #droite.choixInstrument(19)
         #gauche_eucl.choixInstrument(19)
+        jouees = {i: True for i in range(len(listVoix))}
+
         
 
-        self.orch = voix.Orchestre(self.tonic_init, self.quality_init, self.gamme_init, listVoix)
+        self.orch = voix.Orchestre(self.tonic_init, self.quality_init, self.gamme_init, listVoix, jouees)
         while not self.quit :
             if self.playing :
                 #on va laisser chaque voix décider de ce qu'ils veulent faire
