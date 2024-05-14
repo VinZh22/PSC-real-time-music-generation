@@ -78,12 +78,12 @@ class Algo:
         droite = voix.VoixDroite(self.vecteur_init, self.vecteur_rythme_r, self.scale, self.output_port, self.bpm)
         gauche_eucl = voix.VoixEuclideGauche(self.vecteur_init, self.vecteur_rythme_r, self.scale, self.output_port, self.nb_actif, self.nb_tps, self.offset, self.bpm)
         nb_rythm = 0   # à choisir ! 
-        octave = 5
+        octave = 3
         degre = 1
 
         sdm1 = voix.VoixSDM(self.vecteur_init, self.vecteur_rythme_r, self.scale, self.output_port, nb_rythm, octave, degre, self.bpm)
-        sdm2 = voix.VoixSDM(self.vecteur_init, self.vecteur_rythme_r, self.scale, self.output_port, nb_rythm, octave, 3, self.bpm)
-        sdm3 = voix.VoixSDM(self.vecteur_init, self.vecteur_rythme_r, self.scale, self.output_port, nb_rythm, octave, 5, self.bpm)
+        sdm2 = voix.VoixSDM(self.vecteur_init, self.vecteur_rythme_r, self.scale, self.output_port, 2, 5, 3, self.bpm)
+        sdm3 = voix.VoixSDM(self.vecteur_init, self.vecteur_rythme_r, self.scale, self.output_port, 3, 5, 5, self.bpm)
         listVoix = [gauche_eucl,droite, sdm1, sdm2, sdm3]
         
         jouees = {i: True for i in range(len(listVoix))}
@@ -112,15 +112,12 @@ class Algo:
 
     def quit_music(self):
         self.quit = True  # Indiquer au thread de se terminer
-
         if self.music_thread.is_alive():
-            self.music_thread.join(timeout=10)  # Attendre jusqu'à 10 secondes pour que le thread se termine
-
+            self.music_thread.join(timeout=10)  # Attendre au maximum 10 secondes 
         if self.music_thread.is_alive():
             print("Le thread de musique ne s'est pas terminé correctement.")
         else:
             print("Le thread de musique s'est terminé proprement.")
-
         self.output_port.close()  # Fermer le port après que le thread soit terminé
         print ("Port fermé")
 
@@ -129,11 +126,10 @@ class Algo:
     def restart(self):
         """Redémarre la lecture de la musique."""
         self.quit_music()  # S'assurer que tout est arrêté et fermé proprement
-        self.quit = False  # Réinitialiser le signal d'arrêt
-        self.playing = False  # Activer la lecture
+        self.quit = False  
+        self.playing = False 
         # Recréer et démarrer le thread de musique
         self.music_thread = threading.Thread(target=self.play_music)
-        print("Redémarrage de la musique")
         self.output_port = mido.open_output(self.output_port_name)
         self.music_thread.start()
         print("Musique redémarrée")
@@ -144,10 +140,9 @@ class Algo:
 
     # Set up MIDI output port (replace 'Your MIDI Port' with your actual MIDI output port name)
     def main(self):
-        # Start the music playback in a separate thread
+        # Lancer la musique dans un thread séparé
         self.music_thread = threading.Thread(target=self.play_music, args=())
         self.music_thread.start()
-        
         return self.music_thread
 
     def close(self):

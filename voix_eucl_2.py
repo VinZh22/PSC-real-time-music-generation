@@ -331,7 +331,6 @@ class Orchestre :
                 note = voix.nextTime(t)
                 if note:
                     self.to_play.append([voix,note])
-                    print(gammes.nombre_lettre(note))
         
         if time() >= self.oneTime*8 + self.debut_bar: #début de mesure par la fin de la precedente
            self.changeMesure()
