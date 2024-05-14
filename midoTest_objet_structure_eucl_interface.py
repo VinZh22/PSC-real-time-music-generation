@@ -89,8 +89,6 @@ class Algo:
         #gauche_eucl.choixInstrument(19)
         jouees = {i: True for i in range(len(listVoix))}
 
-        
-
         self.orch = voix.Orchestre(self.tonic_init, self.quality_init, self.gamme_init, listVoix, jouees)
         while not self.quit :
             if self.playing :

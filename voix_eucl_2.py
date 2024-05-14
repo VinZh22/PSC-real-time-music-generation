@@ -274,7 +274,7 @@ class VoixSDM (Voix) :
         self.degre = degre
         self.nb_rythm = nb_rythm
 
-        self.volume_coeff = 0.5
+        self.volume_coeff = 0.7
 
         self.choixInstrument()
         
