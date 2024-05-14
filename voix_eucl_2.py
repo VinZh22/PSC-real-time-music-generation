@@ -28,10 +28,13 @@ class Voix :
         self.scale = scale
         self.proba_faux = proba_faux
 
+
+
         self.t_end = time()
 
         # à décider dans les classes
         self.velocity = 64
+        self.volume_coeff = 1.
         # il y a aussi : self.program et self.channel
 
         #des variables qui vont servir quand on utilisera la voix
@@ -271,6 +274,8 @@ class VoixSDM (Voix) :
         self.degre = degre
         self.nb_rythm = nb_rythm
 
+        self.volume_coeff = 0.5
+
         self.choixInstrument()
         
     def init_later(self):
@@ -334,7 +339,7 @@ class Orchestre :
 
     def set_volume(self, volume_level):
         for voix in self.tab_voix:
-            volume_message = mido.Message('control_change', channel=voix.channel, control=7, value=volume_level)
+            volume_message = mido.Message('control_change', channel=voix.channel, control=7, value=int(volume_level*voix.volume_coeff))
             voix.output_port.send(volume_message)
 
     def play_sound(self):
