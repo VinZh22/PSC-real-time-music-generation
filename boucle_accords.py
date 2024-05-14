@@ -1,5 +1,5 @@
 #n = 7 vaut le 7 diminué et n = 8 vaut le 7 majeur pour la gamme mineure
-import numpy.random as rd
+import random as rd
 
 def nb_suiv(gamme = "Major", n = 1):
 	if gamme == "Major":
