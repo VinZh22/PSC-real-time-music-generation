@@ -284,7 +284,10 @@ class VoixSDM (Voix) :
 
     def changeMesure(self):
         super().changeMesure()
-        self.v = notes.dirac(self.v, gammes.lettre_nombre(self.root) + 24)
+        note_dirac = gammes.lettre_nombre(self.root) + 12*self.octave
+        for i in range(0, self.degre-1):
+            note_dirac = notes.succ(note_dirac, self.scale)
+        self.v = notes.dirac(self.v, note_dirac)
 
     def create_newNote(self):
         return super().create_newNote()

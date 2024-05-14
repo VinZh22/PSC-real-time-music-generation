@@ -93,8 +93,11 @@ def succ(note, g = gamme):
     i = 0
     while curr <= note:
         i += 1
+        if i >= len(g):
+            print ("note trop haute" + str(note) + " " + str(g))
         curr = g[i]
     return g[i]
+
 
 def pred(note, g = gamme):
     curr = g[-1]

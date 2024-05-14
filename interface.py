@@ -101,8 +101,9 @@ class Music_player(ctk.CTk):
         self.menu_button.bind("<Enter>", self.show_menu)
 
         # Prepare the dropdown menu (not visible until hovered)
-        self.prepare_menu()
+        
         self.connect = connect.Connect()
+        self.prepare_menu()
         
     def on_closing(self):
         if messagebox.askokcancel("Quit", "Do you want to quit?"):
@@ -123,8 +124,11 @@ class Music_player(ctk.CTk):
         self.dropdown_menu.add_command(label="Instru Gauche piano", command=lambda: self.set_instru(0, 0))
         self.dropdown_menu.add_command(label="Instru Sdm piano", command=lambda: self.set_instru(2, 0))
         self.dropdown_menu.add_separator()
-        
-    
+
+        self.dropdown_menu.add_command(label="Mute Droite", command=self.mute(1))
+        self.dropdown_menu.add_command(label="Mute Gauche", command=self.mute(0))
+        self.dropdown_menu.add_command(label="Mute Sdm", command=self.mute(2))
+        self.dropdown_menu.add_separator()
 
         # Add an input option
         self.dropdown_menu.add_command(label="Instrument main droite", command=self.set_instru_input_1)
@@ -140,6 +144,11 @@ class Music_player(ctk.CTk):
             self.tempo_label.configure(text=f"Tempo: {tempo} BPM")
             self.connect.update_tempo(tempo)
 
+    def mute(self, voix):
+        def mute_voix():
+            self.connect.set_instrument(voix, -1)
+        return mute_voix
+        
     def fausse_note(self):
         proba = simpledialog.askfloat("Proba fausse note", "Choisir la probabilité de fausse note (0-1):", parent=self)
         if proba is not None:
