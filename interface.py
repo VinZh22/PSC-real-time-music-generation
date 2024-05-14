@@ -117,14 +117,19 @@ class Music_player(ctk.CTk):
         self.dropdown_menu = Menu(menubar, tearoff=0)
         
         self.dropdown_menu.add_command(label="Instru Droite guitare", command=lambda: self.set_instru(1, 25))
+        self.dropdown_menu.add_command(label="Instru Sdm guitare", command=lambda: self.set_instru(2, 25))
         self.dropdown_menu.add_command(label="Instru Gauche guitare", command=lambda: self.set_instru(0, 25))
         self.dropdown_menu.add_command(label="Instru Droite piano", command=lambda: self.set_instru(1, 0))
         self.dropdown_menu.add_command(label="Instru Gauche piano", command=lambda: self.set_instru(0, 0))
+        self.dropdown_menu.add_command(label="Instru Sdm piano", command=lambda: self.set_instru(2, 0))
         self.dropdown_menu.add_separator()
         
+    
+
         # Add an input option
         self.dropdown_menu.add_command(label="Instrument main droite", command=self.set_instru_input_1)
         self.dropdown_menu.add_command(label="Instrument main gauche", command=self.set_instru_input_0)
+        self.dropdown_menu.add_command(label="Instrument voix sdm", command=self.set_instru_input_2)
         self.dropdown_menu.add_separator()
 
         self.dropdown_menu.add_command(label="Proba fausse note", command=self.fausse_note)
@@ -144,8 +149,10 @@ class Music_player(ctk.CTk):
     def set_instru_input(self,voix):
         if voix == 0:
             nom = "main gauche"
-        else:
+        elif voix == 1:
             nom = "main droite"
+        else:
+            nom = "voix sdm"        
         number = simpledialog.askinteger("Sélection d'instrument",
                 f"Choisir un instrument pour la {nom} (0-127) ou -1 pour retirer cette voix:",
                 parent=self)
@@ -160,6 +167,8 @@ class Music_player(ctk.CTk):
     def set_instru_input_1(self):
         self.set_instru_input(1)
     
+    def set_instru_input_2(self):
+        self.set_instru_input(2)
     def show_menu(self, event):
         try:
             self.dropdown_menu.tk_popup(event.x_root, event.y_root)
