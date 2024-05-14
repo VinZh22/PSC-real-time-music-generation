@@ -277,7 +277,10 @@ class VoixSDM (Voix) :
         self.i_rtm = 0
         self.len_rtm = len(self.rtm)
         self.get_info_orchestre()
-        self.v = notes.dirac(self.v, gammes.lettre_nombre(self.root) + 12*self.octave + self.degre-1)
+        note_dirac = gammes.lettre_nombre(self.root) + 12*self.octave
+        for i in range(0, self.degre-1):
+            note_dirac = notes.succ(note_dirac, self.scale)
+        self.v = notes.dirac(self.v, note_dirac)
 
     def changeMesure(self):
         super().changeMesure()
