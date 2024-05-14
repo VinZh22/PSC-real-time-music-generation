@@ -78,15 +78,14 @@ class Algo:
         droite = voix.VoixDroite(self.vecteur_init, self.vecteur_rythme_r, self.scale, self.output_port, self.bpm)
         gauche_eucl = voix.VoixEuclideGauche(self.vecteur_init, self.vecteur_rythme_r, self.scale, self.output_port, self.nb_actif, self.nb_tps, self.offset, self.bpm)
         nb_rythm = 0   # à choisir ! 
-        octave = 3
+        octave = 5
         degre = 1
 
         sdm1 = voix.VoixSDM(self.vecteur_init, self.vecteur_rythme_r, self.scale, self.output_port, nb_rythm, octave, degre, self.bpm)
         sdm2 = voix.VoixSDM(self.vecteur_init, self.vecteur_rythme_r, self.scale, self.output_port, nb_rythm, octave, 3, self.bpm)
         sdm3 = voix.VoixSDM(self.vecteur_init, self.vecteur_rythme_r, self.scale, self.output_port, nb_rythm, octave, 5, self.bpm)
-        listVoix = [gauche_eucl, droite, sdm1, sdm2, sdm3]
-        #droite.choixInstrument(19)
-        #gauche_eucl.choixInstrument(19)
+        listVoix = [gauche_eucl,droite, sdm1, sdm2, sdm3]
+        
         jouees = {i: True for i in range(len(listVoix))}
 
         
